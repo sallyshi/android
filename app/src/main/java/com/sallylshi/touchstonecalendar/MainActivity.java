@@ -90,7 +90,7 @@ listView.setAdapter(eventListAdapter);
                     Element element = doc.select("script[id*=\"timely-calendar-state\"]").first();
 
                     TextView view = findViewById(R.id.test);
-//test
+
                     String json = element.data();
                     final String realjson = json.replaceAll("&q;", "\"");
 //                    runOnUiThread( () ->view.setText(realjson));
