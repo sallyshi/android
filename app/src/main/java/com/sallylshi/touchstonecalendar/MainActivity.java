@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -49,12 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            if(convertView == null) {
+            if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.list_item, parent, false);
             }
 
             ((TextView) convertView.findViewById(R.id.title)).setText(eventList.get(position).title);
-
             ((TextView) convertView.findViewById(R.id.description)).setText(eventList.get(position).description);
 
             return convertView;
@@ -66,18 +66,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Event ev1 = new Event("Yoga", new Date(), new Date(), "This is a yoga class.", "Mission Cliffs");
-        Event ev2 = new Event("Climbing", new Date(), new Date(), "Climb things.", "Some other place");
+//        Event ev1 = new Event("Yoga", new Date(), new Date(), "This is a yoga class.", "Mission Cliffs");
+//        Event ev2 = new Event("Climbing", new Date(), new Date(), "Climb things.", "Some other place");
+//
+//        List<Event> events = new ArrayList<>();
+//        events.add(ev1);
+//        events.add(ev2);
 
-        List<Event> events = new ArrayList<>();
-        events.add(ev1);
-        events.add(ev2);
+        //ListView listView = findViewById(R.id.list);
 
-       ListView listView = findViewById(R.id.list);
-
-      EventListAdapter eventListAdapter = new EventListAdapter(events);
-listView.setAdapter(eventListAdapter);
-        //getHtmlFromWeb();
+       // EventListAdapter eventListAdapter = new EventListAdapter(events);
+       // listView.setAdapter(eventListAdapter);
+        getHtmlFromWeb();
     }
 
     private void getHtmlFromWeb() {
@@ -85,7 +85,6 @@ listView.setAdapter(eventListAdapter);
             @Override
             public void run() {
                 try {
-                    String output = "";
                     Document doc = Jsoup.connect(MISSION_CLIFFS_URL).get();
                     Element element = doc.select("script[id*=\"timely-calendar-state\"]").first();
 
@@ -93,18 +92,14 @@ listView.setAdapter(eventListAdapter);
 
                     String json = element.data();
                     final String realjson = json.replaceAll("&q;", "\"");
-//                    runOnUiThread( () ->view.setText(realjson));
-
 
                     JsonReader reader = new JsonReader(new StringReader(realjson));
                     reader.setLenient(true);
 
-
                     final String thisIsreallytheoutput = parse(reader);
 
                     // Test on UI
-                    runOnUiThread( () ->view.setText(thisIsreallytheoutput));
-
+                    runOnUiThread(() -> view.setText(thisIsreallytheoutput));
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -113,11 +108,11 @@ listView.setAdapter(eventListAdapter);
         }).start();
     }
 
-    public String parse(JsonReader reader) throws IOException{
+    public String parse(JsonReader reader) throws IOException {
         String output = "";
         String indent = "";
         int counter = 0;
-        while(reader.peek() == JsonToken.END_ARRAY || reader.peek() == JsonToken.END_OBJECT || reader.hasNext()) {
+        while (reader.peek() == JsonToken.END_ARRAY || reader.peek() == JsonToken.END_OBJECT || reader.hasNext()) {
             Log.i("parse", "" + reader.peek());
             switch (reader.peek()) {
                 case BEGIN_ARRAY: {
@@ -126,7 +121,7 @@ listView.setAdapter(eventListAdapter);
                     break;
                 }
                 case BEGIN_OBJECT: {
-                    indent+="" + counter++;
+                    indent += "" + counter++;
                     reader.beginObject();
                     output += "{\n" + indent;
                     break;
@@ -146,7 +141,7 @@ listView.setAdapter(eventListAdapter);
                 }
                 case END_OBJECT: {
                     counter--;
-                    if(indent.length() > 0) {
+                    if (indent.length() > 0) {
                         indent = indent.substring(0, indent.length() - 1);
                     }
                     reader.endObject();
