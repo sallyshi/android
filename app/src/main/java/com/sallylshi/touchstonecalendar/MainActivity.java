@@ -93,7 +93,6 @@ listView.setAdapter(eventListAdapter);
 
                     String json = element.data();
                     final String realjson = json.replaceAll("&q;", "\"");
-
 //                    runOnUiThread( () ->view.setText(realjson));
 
                     JsonReader reader = new JsonReader(new StringReader(realjson));
