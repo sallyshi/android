@@ -11,27 +11,20 @@ public class JsonParser {
     public String read(JsonReader reader) throws IOException {
         Log.e("SALLY", "JsonParser.read");
         String output = "";
-        String peek = "";
+        String name = "";
+
         reader.beginObject();
-        output += reader.nextName();
 
-        while(reader.hasNext()) {
-            if(reader.peek() == JsonToken.NAME) {
-                String name = reader.nextName();
-                Log.e("SALLY", name);
-//                if(name == "body") {
-//                    output += name;
-//                    break;
-//                }
+            for(int i=0; i < 3; i++) {
+                if (reader.peek() == JsonToken.NAME) {
+                    name = reader.nextName();
+                }
+                reader.skipValue();
             }
-            reader.skipValue();
-//            if(reader.peek() == JsonToken.END_OBJECT) {
-//                reader.endObject();
-//                reader.beginObject();
-//                output += "END OBJECT NEXCT IS " + reader.nextName();
-//            }
-        }
 
-         return "blank";
+            name = reader.nextName();
+            reader.beginObject();
+
+         return name;
     }
 }
