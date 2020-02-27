@@ -1,7 +1,6 @@
 package com.sallylshi.touchstonecalendar;
 
 import android.util.JsonReader;
-import android.util.JsonToken;
 import android.util.Log;
 
 import java.io.IOException;
@@ -41,7 +40,7 @@ public class JsonParser {
        reader.beginObject();
         while (reader.hasNext()) {
             name = reader.nextName();
-            if (name == "items") {
+            if (name.equals("items")) {
                 break;
             } else {
                 reader.skipValue();
