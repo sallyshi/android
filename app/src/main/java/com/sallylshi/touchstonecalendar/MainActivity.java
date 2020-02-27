@@ -25,6 +25,8 @@ import org.jsoup.nodes.Element;
 public class MainActivity extends AppCompatActivity {
     private static String MISSION_CLIFFS_URL = "https://calendar.time.ly/rl4r7fx3/stream?tags=151613968&timely_id=timely_0.761031607867843";
 
+    private JsonParser jsonParser;
+
     private class EventListAdapter extends BaseAdapter {
 
         List<Event> eventList;
@@ -66,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        jsonParser = new JsonParser();
+
 //        Event ev1 = new Event("Yoga", new Date(), new Date(), "This is a yoga class.", "Mission Cliffs");
 //        Event ev2 = new Event("Climbing", new Date(), new Date(), "Climb things.", "Some other place");
 //
@@ -96,7 +100,8 @@ public class MainActivity extends AppCompatActivity {
                     JsonReader reader = new JsonReader(new StringReader(realjson));
                     reader.setLenient(true);
 
-                    final String thisIsreallytheoutput = parse(reader);
+                    final String thisIsreallytheoutput = jsonParser.read(reader);//parse(reader);
+                    //final String thisIsreallytheoutput = parse(reader);
 
                     // Test on UI
                     runOnUiThread(() -> view.setText(thisIsreallytheoutput));
