@@ -15,16 +15,25 @@ public class JsonParser {
 
         reader.beginObject();
 
-            for(int i=0; i < 3; i++) {
-                if (reader.peek() == JsonToken.NAME) {
-                    name = reader.nextName();
-                }
+        for (int i = 0; i < 3; i++) {
+            if (reader.peek() == JsonToken.NAME) {
+                name = reader.nextName();
+            }
+            reader.skipValue();
+        }
+        reader.nextName();
+        reader.beginObject();
+        reader.nextName(); //this is body
+        reader.beginObject(); // this is "success"
+        while (reader.hasNext()) {
+            name = reader.nextName();
+            if (name == "data") {
+                break;
+            } else {
                 reader.skipValue();
             }
+        }
 
-            name = reader.nextName();
-            reader.beginObject();
-
-         return name;
+        return name;
     }
 }
