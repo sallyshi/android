@@ -13,7 +13,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -100,8 +105,26 @@ public class MainActivity extends AppCompatActivity {
                     JsonReader reader = new JsonReader(new StringReader(realjson));
                     reader.setLenient(true);
 
+                    // Temporary hack for 503
+//                    URL url = new URL("https://drive.google.com/open?id=16gFGZCSLr6VTxy_W0KrDOV_JoGhbI-q-");
+//                    HttpURLConnection connection =
+//                            (HttpURLConnection) url.openConnection();
+//                    InputStream result = connection.getInputStream();
+//                    InputStreamReader in = new InputStreamReader(result);
+//                   JsonReader reader = new JsonReader(in);
+//                    reader.setLenient(true);
+//
+//                    StringBuilder out = new StringBuilder();
+//                    int bufferSize = 1024;
+//                    char[] buffer = new char[bufferSize];
+//                    int charsRead;
+//                    while ((charsRead = in.read(buffer, 0, buffer.length)) > 0) {
+//                        out.append(buffer,0,charsRead);
+//                    }
+
+
                     final String thisIsreallytheoutput = jsonParser.read(reader);
-                    //final String thisIsreallytheoutput = parse(reader);
+                   //final String thisIsreallytheoutput = parse(reader);
 
                     // Test on UI
                     runOnUiThread(() -> view.setText(thisIsreallytheoutput));
