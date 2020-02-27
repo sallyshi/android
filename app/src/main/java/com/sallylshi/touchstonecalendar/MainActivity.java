@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     JsonReader reader = new JsonReader(new StringReader(realjson));
                     reader.setLenient(true);
 
-                    final String thisIsreallytheoutput = jsonParser.read(reader);//parse(reader);
+                    final String thisIsreallytheoutput = jsonParser.read(reader);
                     //final String thisIsreallytheoutput = parse(reader);
 
                     // Test on UI

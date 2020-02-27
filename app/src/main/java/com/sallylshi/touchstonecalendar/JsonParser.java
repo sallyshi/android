@@ -25,13 +25,13 @@ public class JsonParser {
 //                }
             }
             reader.skipValue();
-            if(reader.peek() == JsonToken.END_OBJECT) {
-                reader.endObject();
-                reader.beginObject();
-                output += "END OBJECT NEXCT IS " + reader.nextName();
-            }
+//            if(reader.peek() == JsonToken.END_OBJECT) {
+//                reader.endObject();
+//                reader.beginObject();
+//                output += "END OBJECT NEXCT IS " + reader.nextName();
+//            }
         }
 
-         return reader.peek().toString();
+         return "blank";
     }
 }
