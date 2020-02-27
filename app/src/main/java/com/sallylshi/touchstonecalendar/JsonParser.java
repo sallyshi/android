@@ -8,7 +8,6 @@ import java.io.IOException;
 public class JsonParser {
 
     public String read(JsonReader reader) throws IOException {
-        Log.e("SALLY", "JsonParser.read");
         String output = "";
         String name = "";
 
@@ -26,14 +25,10 @@ public class JsonParser {
         reader.beginObject(); // this is "success"
         int count = 1;
         while (reader.hasNext()) {
-
-            Log.e("SALLY", "while loop number " + count++);
             name = reader.nextName();
             if (name.equals("data")) {
-                Log.e("SALLY", "if");
                 break;
             } else {
-                Log.e("SALLY", "else " + reader.peek());
                 reader.skipValue();
             }
         }
