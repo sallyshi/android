@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 public class JsonParser {
@@ -64,7 +65,6 @@ public class JsonParser {
 
     String read(JsonReader reader) throws IOException, ParseException {
         reader.beginObject();
-
         // The 4th name's value contains the data we want to extract
         for (int i = 0; i < 3; i++) {
             reader.nextName();
@@ -83,11 +83,7 @@ public class JsonParser {
         reader.beginObject();
 
         Event event = parseEvent(reader);
-        return event.start.toString();
-
-
-        //SimpleDateFormat g = new SimpleDateFormat("yyyy-MM-dd hh:mm z");
-
+        return reader.peek().toString();
 
     }
 }

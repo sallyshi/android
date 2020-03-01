@@ -83,9 +83,9 @@ public class MainActivity extends AppCompatActivity {
 //        events.add(ev1);
 //        events.add(ev2);
 
-        //ListView listView = findViewById(R.id.list);
+     //   ListView listView = findViewById(R.id.list);
 
-       // EventListAdapter eventListAdapter = new EventListAdapter(events);
+   //    EventListAdapter eventListAdapter = new EventListAdapter(jsonParser.read(reader));
        // listView.setAdapter(eventListAdapter);
         getHtmlFromWeb();
     }
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     reader.setLenient(true);
 
                    final String thisIsreallytheoutput = jsonParser.read(reader);
-                   //final String thisIsreallytheoutput = parse(reader);
+                  // final String thisIsreallytheoutput = parse(reader);
 
                     // Test on UI
                     runOnUiThread(() -> view.setText(thisIsreallytheoutput));
