@@ -75,7 +75,7 @@ public class JsonParser {
         return new Event(title, start_date, end_date, description, costType, url);
     }
 
-    String read(JsonReader reader) throws IOException, ParseException {
+    List<Event> read(JsonReader reader) throws IOException, ParseException {
         reader.beginObject();
 
         // The 4th name's value contains the data we want to extract
@@ -102,7 +102,6 @@ public class JsonParser {
         }
         reader.endArray();
 
-        return events.get(events.size()-1).url.toString();
-
+        return events;
     }
 }
