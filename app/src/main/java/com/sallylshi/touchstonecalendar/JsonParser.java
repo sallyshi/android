@@ -1,39 +1,29 @@
 package com.sallylshi.touchstonecalendar;
 
 import android.util.JsonReader;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.TimeZone;
 
-public class JsonParser {
+class JsonParser {
 
-    private String readNameFromObject(JsonReader reader, String inputName) throws IOException {
+    private void readNameFromObject(JsonReader reader, String inputName) throws IOException {
         String output = "";
         reader.beginObject();
         while (reader.hasNext()) {
             output = reader.nextName();
             if (output.equals(inputName)) {
-                return output;
+                return;
             } else {
                 reader.skipValue();
             }
         }
-        return null;
     }
 
     private Event parseEvent(JsonReader reader) throws IOException, ParseException {
@@ -48,23 +38,31 @@ public class JsonParser {
 
         while (reader.hasNext()) {
             String name = reader.nextName();
-            if (name.equals("start_datetime")) {
-                start = reader.nextString();
-            } else if (name.equals("end_datetime")) {
-                end = reader.nextString();
-            } else if (name.equals("timezone")) {
-                timezone = TimeZone.getTimeZone(reader.nextString()).getDisplayName();
-            } else if (name.equals("title")) {
-                title = reader.nextString();
-            } else if (name.equals("description_short")) {
-                description = reader.nextString();
-            } else if (name.equals("cost_type")) {
-                costType = reader.nextString();
-            } else if(name.equals("url")) {
-                url = new URL(reader.nextString());
-            }
-            else {
-                reader.skipValue();
+            switch (name) {
+                case "start_datetime":
+                    start = reader.nextString();
+                    break;
+                case "end_datetime":
+                    end = reader.nextString();
+                    break;
+                case "timezone":
+                    timezone = TimeZone.getTimeZone(reader.nextString()).getDisplayName();
+                    break;
+                case "title":
+                    title = reader.nextString();
+                    break;
+                case "description_short":
+                    description = reader.nextString();
+                    break;
+                case "cost_type":
+                    costType = reader.nextString();
+                    break;
+                case "url":
+                    url = new URL(reader.nextString());
+                    break;
+                default:
+                    reader.skipValue();
+                    break;
             }
         }
 

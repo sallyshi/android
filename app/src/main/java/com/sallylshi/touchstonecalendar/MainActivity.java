@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private class EventListAdapter extends BaseAdapter {
         List<Event> eventList;
 
-        public EventListAdapter(List<Event> eventList) {
+        EventListAdapter(List<Event> eventList) {
             this.eventList = eventList;
         }
 
@@ -113,12 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This parser outputs the original Json read. It is only used for testing.
-     * @param reader
-     * @return
-     * @throws IOException
      */
     public String testParser(JsonReader reader) throws IOException {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         String indent = "";
         int counter = 0;
         while (reader.peek() == JsonToken.END_ARRAY || reader.peek() == JsonToken.END_OBJECT || reader.hasNext()) {
@@ -126,27 +123,27 @@ public class MainActivity extends AppCompatActivity {
             switch (reader.peek()) {
                 case BEGIN_ARRAY: {
                     reader.beginArray();
-                    output += "[\n" + indent;
+                    output.append("[\n").append(indent);
                     break;
                 }
                 case BEGIN_OBJECT: {
                     indent += "" + counter++;
                     reader.beginObject();
-                    output += "{\n" + indent;
+                    output.append("{\n").append(indent);
                     break;
                 }
                 case BOOLEAN: {
-                    output += reader.nextBoolean() + "\n" + indent;
+                    output.append(reader.nextBoolean()).append("\n").append(indent);
                     break;
                 }
                 case END_ARRAY: {
                     reader.endArray();
-                    output += "]\n" + indent;
+                    output.append("]\n").append(indent);
                     break;
                 }
                 case END_DOCUMENT: {
                     reader.close();
-                    return output;
+                    return output.toString();
                 }
                 case END_OBJECT: {
                     counter--;
@@ -154,28 +151,28 @@ public class MainActivity extends AppCompatActivity {
                         indent = indent.substring(0, indent.length() - 1);
                     }
                     reader.endObject();
-                    output += "}\n" + indent;
+                    output.append("}\n").append(indent);
                     break;
                 }
                 case NAME: {
-                    output += "\"" + reader.nextName() + "\": ";
+                    output.append("\"").append(reader.nextName()).append("\": ");
                     break;
                 }
                 case NULL: {
                     reader.nextNull();
-                    output += "null,\n" + indent;
+                    output.append("null,\n").append(indent);
                     break;
                 }
                 case NUMBER: {
-                    output += reader.nextDouble() + ",\n" + indent;
+                    output.append(reader.nextDouble()).append(",\n").append(indent);
                     break;
                 }
                 case STRING: {
-                    output += reader.nextString() + ",\n" + indent;
+                    output.append(reader.nextString()).append(",\n").append(indent);
                     break;
                 }
             }
         }
-        return output;
+        return output.toString();
     }
 }
