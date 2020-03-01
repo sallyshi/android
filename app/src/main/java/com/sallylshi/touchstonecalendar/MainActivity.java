@@ -116,7 +116,13 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    public String parse(JsonReader reader) throws IOException {
+    /**
+     * This parser outputs the original Json read. It is only used for testing.
+     * @param reader
+     * @return
+     * @throws IOException
+     */
+    public String testParser(JsonReader reader) throws IOException {
         String output = "";
         String indent = "";
         int counter = 0;
