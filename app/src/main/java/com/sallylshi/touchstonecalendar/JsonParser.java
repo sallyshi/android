@@ -1,18 +1,22 @@
 package com.sallylshi.touchstonecalendar;
 
 import android.util.JsonReader;
-import android.util.Log;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class JsonParser {
 
-    private JsonReader readName(JsonReader reader, String savedName, String inputName) throws IOException {
+    private String readNameFromObject(JsonReader reader, String inputName) throws IOException {
+        String output = "";
         reader.beginObject();
         while (reader.hasNext()) {
-            savedName = reader.nextName();
-            if (savedName.equals(inputName)) {
-                return reader;
+            output = reader.nextName();
+            if (output.equals(inputName)) {
+                return output;
             } else {
                 reader.skipValue();
             }
@@ -20,15 +24,16 @@ public class JsonParser {
         return null;
     }
 
-    public String read(JsonReader reader) throws IOException {
-        String output = "";
-        String name = "";
-
+    public String read(JsonReader reader) throws IOException, ParseException {
+        String title;
+        Date start, end;
+        String description;
+        String venue;
         reader.beginObject();
 
         // The 4th name's value contains the data we want to extract
         for (int i = 0; i < 3; i++) {
-            name = reader.nextName();
+            reader.nextName();
             reader.skipValue();
         }
 
@@ -36,42 +41,18 @@ public class JsonParser {
         reader.beginObject();
         reader.nextName(); //this is body
 
-        readName(reader,name, "data");
+        readNameFromObject(reader, "data");
+        readNameFromObject(reader, "items");
+        readNameFromObject(reader, "2020-03-01");
 
-        //G.timelyblahelhie
+        reader.beginArray();
+        readNameFromObject(reader, "start_datetime");
+       // SimpleDateFormat f = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss z");
+
+       // start = f.parse(reader.nextString());
+
+       return reader.nextString();
 
 
-
-        //readName(readName(readName(reader, "data"), "items"), "start_datetime");
-
-//        reader.beginObject(); // this is "success"
-//        while (reader.hasNext()) {
-//            name = reader.nextName();
-//            if (name.equals("data")) {
-//                break;
-//            } else {
-//                reader.skipValue();
-//            }
-//        }
-//       reader.beginObject();
-//        while (reader.hasNext()) {
-//            name = reader.nextName();
-//            if (name.equals("items")) {
-//                break;
-//            } else {
-//                reader.skipValue();
-//            }
-//        }
-//
-//        reader.beginObject();
-//        while (reader.hasNext()) {
-//            name = reader.nextName();
-//            if (name.equals("start_datetime")) {
-//                break;
-//            } else {
-//                reader.skipValue();
-//            }
-//        }
-        return name;
     }
 }

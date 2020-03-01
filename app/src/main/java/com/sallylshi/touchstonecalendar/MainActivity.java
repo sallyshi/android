@@ -19,6 +19,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     // Test on UI
                     runOnUiThread(() -> view.setText(thisIsreallytheoutput));
 
-                } catch (IOException e) {
+                } catch (IOException | ParseException e) {
                     e.printStackTrace();
                 }
             }
