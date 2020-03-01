@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private static String MISSION_CLIFFS_URL = "https://calendar.time.ly/rl4r7fx3/stream?tags=151613968&timely_id=timely_0.761031607867843";
 
     private class EventListAdapter extends BaseAdapter {
-
         List<Event> eventList;
 
         public EventListAdapter(List<Event> eventList) {
@@ -86,32 +85,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getHtmlFromWeb() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Document doc = Jsoup.connect(MISSION_CLIFFS_URL).get();
-                    Element element = doc.select("script[id*=\"timely-calendar-state\"]").first();
+        new Thread(() -> {
+            try {
+                Document doc = Jsoup.connect(MISSION_CLIFFS_URL).get();
+                Element element = doc.select("script[id*=\"timely-calendar-state\"]").first();
 
-                    String json = element.data();
-                    final String realjson = json.replaceAll("&q;", "\"");
-                    JsonParser jsonParser = new JsonParser();
-                    JsonReader reader = new JsonReader(new StringReader(realjson));
-                    reader.setLenient(true);
+                String json = element.data();
+                final String strippedJson = json.replaceAll("&q;", "\"");
+                JsonParser jsonParser = new JsonParser();
+                JsonReader reader = new JsonReader(new StringReader(strippedJson));
+                reader.setLenient(true);
 
-                    ListView listView = findViewById(R.id.list);
+                ListView listView = findViewById(R.id.list);
 
-                    EventListAdapter eventListAdapter = new EventListAdapter(jsonParser.read(reader));
-                    runOnUiThread(() -> listView.setAdapter(eventListAdapter));
+                EventListAdapter eventListAdapter = new EventListAdapter(jsonParser.read(reader));
+                runOnUiThread(() -> listView.setAdapter(eventListAdapter));
 
-                    // TextView view = findViewById(R.id.test);
-                    // final String thisIsreallytheoutput = jsonParser.read(reader);
-                    // final String thisIsreallytheoutput = parse(reader);
-                    // runOnUiThread(() -> view.setText(thisIsreallytheoutput));
+                // TextView view = findViewById(R.id.test);
+                // final String thisIsreallytheoutput = jsonParser.read(reader);
+                // runOnUiThread(() -> view.setText(thisIsreallytheoutput));
 
-                } catch (IOException | ParseException e) {
-                    e.printStackTrace();
-                }
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
             }
         }).start();
     }
