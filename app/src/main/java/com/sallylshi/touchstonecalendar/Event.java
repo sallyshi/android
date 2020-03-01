@@ -6,13 +6,13 @@ public class Event {
     String title;
     Date start, end;
     String description;
-    String venue;
+    String costType;
 
-    public Event(String title, Date start, Date end, String description, String venue){
+    public Event(String title, Date start, Date end, String description, String costType){
         this.title = title;
         this.start = start;
         this.end = end;
         this.description = description;
-        this.venue = venue;
+        this.costType = costType;
     }
 }

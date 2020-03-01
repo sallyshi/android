@@ -4,10 +4,12 @@ import android.util.JsonReader;
 import android.util.Log;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class JsonParser {
 
@@ -30,25 +32,34 @@ public class JsonParser {
         String end = "";
         String timezone = "";
         Date start_date, end_date;
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss z");
+        String title = "";
+        String description = "";
+        String costType = "";
 
         while (reader.hasNext()) {
             String name = reader.nextName();
-            if(name.equals("start_datetime")) {
+            if (name.equals("start_datetime")) {
                 start = reader.nextString();
-            } else if(name.equals("end_datetime")) {
+            } else if (name.equals("end_datetime")) {
                 end = reader.nextString();
-            } else if(name.equals("timezone")) {
-                timezone = reader.nextString();
+            } else if (name.equals("timezone")) {
+                timezone = TimeZone.getTimeZone(reader.nextString()).getDisplayName();
+            } else if (name.equals("title")) {
+                title = reader.nextString();
+            } else if (name.equals("description_short")) {
+                description = reader.nextString();
+            } else if (name.equals("cost_type")) {
+                costType = reader.nextString();
             } else {
                 reader.skipValue();
             }
         }
 
-       start_date = f.parse(start + " " + timezone);
-        end_date = f.parse(end + " "+timezone);
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss z");
+        start_date = f.parse(start + " " + timezone);
+        end_date = f.parse(end + " " + timezone);
 
-        return new Event(null, start_date, end_date, null, null);
+        return new Event(title, start_date, end_date, description, costType);
     }
 
     String read(JsonReader reader) throws IOException, ParseException {
@@ -71,9 +82,8 @@ public class JsonParser {
         reader.beginArray();
         reader.beginObject();
 
-    Event event = parseEvent(reader);
-       return    event.start.toString() ;
-
+        Event event = parseEvent(reader);
+        return event.start.toString();
 
 
         //SimpleDateFormat g = new SimpleDateFormat("yyyy-MM-dd hh:mm z");
