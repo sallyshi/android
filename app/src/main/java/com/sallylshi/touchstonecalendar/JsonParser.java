@@ -7,6 +7,19 @@ import java.io.IOException;
 
 public class JsonParser {
 
+    private JsonReader readName(JsonReader reader, String savedName, String inputName) throws IOException {
+        reader.beginObject();
+        while (reader.hasNext()) {
+            savedName = reader.nextName();
+            if (savedName.equals(inputName)) {
+                return reader;
+            } else {
+                reader.skipValue();
+            }
+        }
+        return null;
+    }
+
     public String read(JsonReader reader) throws IOException {
         String output = "";
         String name = "";
@@ -22,28 +35,43 @@ public class JsonParser {
         reader.nextName();
         reader.beginObject();
         reader.nextName(); //this is body
-        reader.beginObject(); // this is "success"
 
-        while (reader.hasNext()) {
-            name = reader.nextName();
-            if (name.equals("data")) {
-                break;
-            } else {
-                reader.skipValue();
-            }
-        }
-       reader.beginObject();
-        while (reader.hasNext()) {
-            name = reader.nextName();
-            if (name.equals("items")) {
-                break;
-            } else {
-                reader.skipValue();
-            }
-        }
+        readName(reader,name, "data");
 
-        reader.beginObject();
+        //G.timelyblahelhie
 
-        return ""+reader.peek();
+
+
+        //readName(readName(readName(reader, "data"), "items"), "start_datetime");
+
+//        reader.beginObject(); // this is "success"
+//        while (reader.hasNext()) {
+//            name = reader.nextName();
+//            if (name.equals("data")) {
+//                break;
+//            } else {
+//                reader.skipValue();
+//            }
+//        }
+//       reader.beginObject();
+//        while (reader.hasNext()) {
+//            name = reader.nextName();
+//            if (name.equals("items")) {
+//                break;
+//            } else {
+//                reader.skipValue();
+//            }
+//        }
+//
+//        reader.beginObject();
+//        while (reader.hasNext()) {
+//            name = reader.nextName();
+//            if (name.equals("start_datetime")) {
+//                break;
+//            } else {
+//                reader.skipValue();
+//            }
+//        }
+        return name;
     }
 }
