@@ -59,18 +59,19 @@ public class MainActivity extends AppCompatActivity {
                 convertView = getLayoutInflater().inflate(R.layout.list_item, parent, false);
             }
 
-            ((TextView) convertView.findViewById(R.id.title))
-                    .setText(String.format("%s%s", getString(R.string.title), eventList.get(position).title));
-            ((TextView) convertView.findViewById(R.id.description))
-                    .setText(String.format("%s%s", getString(R.string.description), eventList.get(position).description
+            TextView title = convertView.findViewById(R.id.title);
+            TextView description = convertView.findViewById(R.id.description);
+            TextView start_time = convertView.findViewById(R.id.start_time);
+            TextView end_time = convertView.findViewById(R.id.end_time);
+            TextView cost_type = convertView.findViewById(R.id.cost_type);
+
+            title.setText(String.format("%s%s", getString(R.string.title), eventList.get(position).title));
+            description.setText(String.format("%s%s", getString(R.string.description), eventList.get(position).description
                             .replaceAll("&a;hellip;", "...")
                             .replaceAll("&q;", "\"")));
-            ((TextView) convertView.findViewById(R.id.cost_type))
-                    .setText(String.format("%s%s", getString(R.string.cost), eventList.get(position).costType));
-            ((TextView) convertView.findViewById(R.id.start_time))
-                    .setText(String.format("%s%s", getString(R.string.start_time), eventList.get(position).start.toString()));
-            ((TextView) convertView.findViewById(R.id.end_time))
-                    .setText(String.format("%s%s", getString(R.string.end_time), eventList.get(position).end.toString()));
+            cost_type.setText(String.format("%s%s", getString(R.string.cost), eventList.get(position).costType));
+            start_time.setText(String.format("%s%s", getString(R.string.start_time), eventList.get(position).start.toString()));
+            end_time.setText(String.format("%s%s", getString(R.string.end_time), eventList.get(position).end.toString()));
 
             return convertView;
         }
