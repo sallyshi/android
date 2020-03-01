@@ -60,11 +60,18 @@ public class MainActivity extends AppCompatActivity {
                 convertView = getLayoutInflater().inflate(R.layout.list_item, parent, false);
             }
 
-            ((TextView) convertView.findViewById(R.id.title)).setText("TITLE: " + eventList.get(position).title);
-            ((TextView) convertView.findViewById(R.id.description)).setText("DESCRIPTION: " + eventList.get(position).description.replaceAll("&a;hellip;", "...").replaceAll("&q;", "\""));
-            ((TextView) convertView.findViewById(R.id.cost_type)).setText("COST: " + eventList.get(position).costType);
-            ((TextView) convertView.findViewById(R.id.start_time)).setText("START TIME: " + eventList.get(position).start.toString());
-            ((TextView) convertView.findViewById(R.id.end_time)).setText("END TIME: " + eventList.get(position).end.toString());
+            ((TextView) convertView.findViewById(R.id.title))
+                    .setText(String.format("%s%s", getString(R.string.title), eventList.get(position).title));
+            ((TextView) convertView.findViewById(R.id.description))
+                    .setText(String.format("%s%s", getString(R.string.description), eventList.get(position).description
+                            .replaceAll("&a;hellip;", "...")
+                            .replaceAll("&q;", "\"")));
+            ((TextView) convertView.findViewById(R.id.cost_type))
+                    .setText(String.format("%s%s", getString(R.string.cost), eventList.get(position).costType));
+            ((TextView) convertView.findViewById(R.id.start_time))
+                    .setText(String.format("%s%s", getString(R.string.start_time), eventList.get(position).start.toString()));
+            ((TextView) convertView.findViewById(R.id.end_time))
+                    .setText(String.format("%s%s", getString(R.string.end_time), eventList.get(position).end.toString()));
 
             return convertView;
         }
