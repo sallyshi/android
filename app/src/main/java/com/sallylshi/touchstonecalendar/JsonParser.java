@@ -23,7 +23,7 @@ public class JsonParser {
         reader.beginObject();
         reader.nextName(); //this is body
         reader.beginObject(); // this is "success"
-        int count = 1;
+
         while (reader.hasNext()) {
             name = reader.nextName();
             if (name.equals("data")) {
@@ -41,6 +41,9 @@ public class JsonParser {
                 reader.skipValue();
             }
         }
-        return name;
+
+        reader.beginObject();
+
+        return ""+reader.peek();
     }
 }
