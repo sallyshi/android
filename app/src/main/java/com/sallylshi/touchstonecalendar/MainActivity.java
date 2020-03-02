@@ -146,31 +146,26 @@ public class MainActivity extends AppCompatActivity {
                 ListView listView = findViewById(R.id.list);
                 Spinner spinner = findViewById(R.id.dropdown_title);
                 String[] spinnerList = getResources().getStringArray(R.array.dropdown_title_array);
-                //EventListAdapter eventListAdapter = new EventListAdapter(jsonParser.read(reader));
                 runOnUiThread(() -> {
                     try {
                         EventListAdapter eventListAdapter = new EventListAdapter(jsonParser.read(reader));
-                    listView.setAdapter(eventListAdapter);
-                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            eventListAdapter.getFilter().filter(spinnerList[position]);
-                        }
+                        listView.setAdapter(eventListAdapter);
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                CharSequence c = position == 0 ? "" : spinnerList[position];
+                                eventListAdapter.getFilter().filter(c);
+                            }
 
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
 
-                        }
-                    });
+                            }
+                        });
                     } catch (IOException | ParseException e) {
                         e.printStackTrace();
                     }
                 });
-
-                // TextView view = findViewById(R.id.test);
-                // final String thisIsreallytheoutput = jsonParser.read(reader);
-                // runOnUiThread(() -> view.setText(thisIsreallytheoutput));
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
