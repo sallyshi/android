@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Filter getFilter() {
-            return null;
+            return filter;
         }
     }
 
