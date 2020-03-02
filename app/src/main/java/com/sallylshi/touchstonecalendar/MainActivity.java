@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class EventListAdapter extends BaseAdapter implements Filterable {
         List<Event> eventList;
+        List<Event> filteredEventList;
         Filter filter;
 
         EventListAdapter(List<Event> eventList) {
@@ -65,19 +66,20 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
-
+                    filteredEventList = (List<Event>) results.values;
+                    notifyDataSetChanged();
                 }
-            }
+            };
         }
 
         @Override
         public int getCount() {
-            return eventList.size();
+            return filteredEventList.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return eventList.get(position);
+            return filteredEventList.get(position);
         }
 
         @Override
@@ -97,15 +99,15 @@ public class MainActivity extends AppCompatActivity {
             TextView end_time = convertView.findViewById(R.id.end_time);
             TextView cost_type = convertView.findViewById(R.id.cost_type);
 
-            title.setText(String.format("%s%s", getString(R.string.title), eventList.get(position).title));
-            description.setText(String.format("%s%s", getString(R.string.description), eventList.get(position).description
+            title.setText(String.format("%s%s", getString(R.string.title), filteredEventList.get(position).title));
+            description.setText(String.format("%s%s", getString(R.string.description), filteredEventList.get(position).description
                             .replaceAll("&a;hellip;", "...")
                             .replaceAll("&s;", "'")
                             .replaceAll("&a;", "&")
                             .replaceAll("&q;", "\"")));
-            cost_type.setText(String.format("%s%s", getString(R.string.cost), eventList.get(position).costType));
-            start_time.setText(String.format("%s%s", getString(R.string.start_time), eventList.get(position).start.toString()));
-            end_time.setText(String.format("%s%s", getString(R.string.end_time), eventList.get(position).end.toString()));
+            cost_type.setText(String.format("%s%s", getString(R.string.cost), filteredEventList.get(position).costType));
+            start_time.setText(String.format("%s%s", getString(R.string.start_time), filteredEventList.get(position).start.toString()));
+            end_time.setText(String.format("%s%s", getString(R.string.end_time), filteredEventList.get(position).end.toString()));
 
             return convertView;
         }
