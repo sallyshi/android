@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -36,11 +37,37 @@ import org.jsoup.nodes.Element;
 public class MainActivity extends AppCompatActivity {
     private static String MISSION_CLIFFS_URL = "https://calendar.time.ly/rl4r7fx3/stream?&timely_id=timely_0.761031607867843";
 
-    private class EventListAdapter extends BaseAdapter {
+    private class EventListAdapter extends BaseAdapter implements Filterable {
         List<Event> eventList;
+        Filter filter;
 
         EventListAdapter(List<Event> eventList) {
             this.eventList = eventList;
+            filter = new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults results = new FilterResults();
+                    ArrayList<Event> filteredEvents = new ArrayList<>();
+                    if (constraint != null && constraint.length() > 0) {
+                        for (Event event : eventList) {
+                            if (event.location.equals(constraint)) {
+                                filteredEvents.add(event);
+                            }
+                        }
+                        results.count = filteredEvents.size();
+                        results.values = filteredEvents;
+                    } else {
+                        results.count = eventList.size();
+                        results.values = eventList;
+                    }
+                    return results;
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+
+                }
+            }
         }
 
         @Override
@@ -82,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
 
             return convertView;
         }
+
+        @Override
+        public Filter getFilter() {
+            return null;
+        }
     }
 
     @Override
@@ -96,17 +128,6 @@ public class MainActivity extends AppCompatActivity {
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    Filter filter = new Filter() {
-//                        @Override
-//                        protected FilterResults performFiltering(CharSequence constraint) {
-//                            return null;
-//                        }
-//
-//                        @Override
-//                        protected void publishResults(CharSequence constraint, FilterResults results) {
-//
-//                        }
-//                    }
                 }
 
                 @Override
