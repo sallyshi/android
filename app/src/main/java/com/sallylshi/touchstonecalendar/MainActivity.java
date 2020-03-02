@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         Filter filter;
 
         EventListAdapter(List<Event> eventList) {
-            this.eventList = eventList;
+            this.eventList = filteredEventList = eventList;
             filter = new Filter() {
                 @Override
                 protected FilterResults performFiltering(CharSequence constraint) {
@@ -146,8 +146,10 @@ public class MainActivity extends AppCompatActivity {
                 ListView listView = findViewById(R.id.list);
                 Spinner spinner = findViewById(R.id.dropdown_title);
                 String[] spinnerList = getResources().getStringArray(R.array.dropdown_title_array);
-                EventListAdapter eventListAdapter = new EventListAdapter(jsonParser.read(reader));
+                //EventListAdapter eventListAdapter = new EventListAdapter(jsonParser.read(reader));
                 runOnUiThread(() -> {
+                    try {
+                        EventListAdapter eventListAdapter = new EventListAdapter(jsonParser.read(reader));
                     listView.setAdapter(eventListAdapter);
                     spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
@@ -160,13 +162,16 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     });
+                    } catch (IOException | ParseException e) {
+                        e.printStackTrace();
+                    }
                 });
 
                 // TextView view = findViewById(R.id.test);
                 // final String thisIsreallytheoutput = jsonParser.read(reader);
                 // runOnUiThread(() -> view.setText(thisIsreallytheoutput));
 
-            } catch (IOException | ParseException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }).start();
