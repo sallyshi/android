@@ -88,11 +88,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActionBar actionBar = getActionBar();
-        if(actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setDisplayShowCustomEnabled(true);
-            View customView = getLayoutInflater().inflate(R.layout.actionbar_title, null);
             Spinner spinner = findViewById(R.id.dropdown_title);
             ArrayAdapter<CharSequence > adapter = ArrayAdapter.createFromResource(this, R.array.dropdown_title_array, android.R.layout.simple_spinner_item);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -108,12 +103,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-
-            actionBar.setCustomView(customView);
-
-
-
-        }
         getHtmlFromWeb();
     }
 

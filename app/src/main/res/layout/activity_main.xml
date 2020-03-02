@@ -7,17 +7,19 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:background="@color/colorPrimaryDark">
+        <Spinner
+            android:id="@+id/dropdown_title"
+            android:layout_width="4dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/list" />
-<!--<ScrollView-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
-<!--    <TextView-->
-<!--        android:id="@+id/test"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text=""></TextView>-->
-<!--</ScrollView>-->
 </LinearLayout>
