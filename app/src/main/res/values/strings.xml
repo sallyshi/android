@@ -7,5 +7,6 @@
     <string name="title">\"TITLE: \"</string>
     <string-array name="dropdown_title_array">
         <item>Mission Cliffs</item>
+        <item>Berkeley Ironworks</item>
     </string-array>
 </resources>
