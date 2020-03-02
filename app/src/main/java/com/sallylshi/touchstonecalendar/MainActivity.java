@@ -101,10 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
             title.setText(String.format("%s%s", getString(R.string.title), filteredEventList.get(position).title));
             description.setText(String.format("%s%s", getString(R.string.description), filteredEventList.get(position).description
-                            .replaceAll("&a;hellip;", "...")
-                            .replaceAll("&s;", "'")
-                            .replaceAll("&a;", "&")
-                            .replaceAll("&q;", "\"")));
+                    .replaceAll("&a;hellip;", "...")
+                    .replaceAll("&s;", "'")
+                    .replaceAll("&a;", "&")
+                    .replaceAll("&q;", "\"")));
             cost_type.setText(String.format("%s%s", getString(R.string.cost), filteredEventList.get(position).costType));
             start_time.setText(String.format("%s%s", getString(R.string.start_time), filteredEventList.get(position).start.toString()));
             end_time.setText(String.format("%s%s", getString(R.string.end_time), filteredEventList.get(position).end.toString()));
@@ -122,22 +122,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-            Spinner spinner = findViewById(R.id.dropdown_title);
-            ArrayAdapter<CharSequence > adapter = ArrayAdapter.createFromResource(this, R.array.dropdown_title_array, android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
         getHtmlFromWeb();
+
+        Spinner spinner = findViewById(R.id.dropdown_title);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.dropdown_title_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
     }
 
     private void getHtmlFromWeb() {
@@ -153,9 +144,23 @@ public class MainActivity extends AppCompatActivity {
                 reader.setLenient(true);
 
                 ListView listView = findViewById(R.id.list);
-
+                Spinner spinner = findViewById(R.id.dropdown_title);
+                String[] spinnerList = getResources().getStringArray(R.array.dropdown_title_array);
                 EventListAdapter eventListAdapter = new EventListAdapter(jsonParser.read(reader));
-                runOnUiThread(() -> listView.setAdapter(eventListAdapter));
+                runOnUiThread(() -> {
+                    listView.setAdapter(eventListAdapter);
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            eventListAdapter.getFilter().filter(spinnerList[position]);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                });
 
                 // TextView view = findViewById(R.id.test);
                 // final String thisIsreallytheoutput = jsonParser.read(reader);
