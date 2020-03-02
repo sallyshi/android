@@ -1,12 +1,13 @@
 <resources>
     <string name="app_name">TouchstoneCalendar</string>
-    <string name="description">\"DESCRIPTION: \"</string>
-    <string name="cost">\"COST: \"</string>
-    <string name="start_time">\"START TIME: \"</string>
-    <string name="end_time">\"END TIME: \"</string>
-    <string name="title">\"TITLE: \"</string>
+    <string name="description">DESCRIPTION: </string>
+    <string name="cost">COST: </string>
+    <string name="start_time">START TIME: </string>
+    <string name="end_time">END TIME: </string>
+    <string name="title">TITLE: </string>
     <string-array name="dropdown_title_array">
         <item>Mission Cliffs</item>
         <item>Berkeley Ironworks</item>
+        <item>Dogpatch Boulders</item>
     </string-array>
 </resources>
