@@ -37,6 +37,7 @@ class JsonParser {
         String description = "";
         String costType = "";
         URL url = null;
+        String location = "";
 
         while (reader.hasNext()) {
             String name = reader.nextName();
@@ -62,13 +63,38 @@ class JsonParser {
                 case "url":
                     url = new URL(reader.nextString());
                     break;
+                case "taxonomies":
+                    reader.beginObject();
+                    while (reader.hasNext()) {
+                        String v = reader.nextName();
+                        if (v.equals("taxonomy_venue")) {
+                            reader.beginArray();
+                            reader.beginObject();
+                            while (reader.hasNext()) {
+                                String t = reader.nextName();
+                                if (t.equals("title")) {
+                                    location = reader.nextString();
+
+                                } else {
+                                    reader.skipValue();
+                                }
+                            }
+                            reader.endObject();
+                            reader.endArray();
+
+                        } else {
+                            reader.skipValue();
+                        }
+                    }
+                    reader.endObject();
+                    break;
                 default:
                     reader.skipValue();
                     break;
             }
         }
         SimpleDateFormat f;
-        if(start.contains("T")) {
+        if (start.contains("T")) {
             f = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss z");
         } else {
             f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss z");
@@ -76,7 +102,7 @@ class JsonParser {
         start_date = f.parse(start + " " + timezone);
         end_date = f.parse(end + " " + timezone);
 
-        return new Event(title, start_date, end_date, description, costType, url);
+        return new Event(title, start_date, end_date, description, costType, url, location);
     }
 
     List<Event> read(JsonReader reader) throws IOException, ParseException {
