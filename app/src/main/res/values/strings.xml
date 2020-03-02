@@ -6,6 +6,7 @@
     <string name="end_time">END TIME: </string>
     <string name="title">TITLE: </string>
     <string-array name="dropdown_title_array">
+        <item>Choose yo gym</item>
         <item>Mission Cliffs</item>
         <item>Berkeley Ironworks</item>
         <item>Dogpatch Boulders</item>
