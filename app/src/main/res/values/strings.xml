@@ -5,4 +5,7 @@
     <string name="start_time">\"START TIME: \"</string>
     <string name="end_time">\"END TIME: \"</string>
     <string name="title">\"TITLE: \"</string>
+    <string-array name="dropdown_title_array">
+        <item>Mission Cliffs</item>
+    </string-array>
 </resources>

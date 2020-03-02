@@ -65,8 +65,12 @@ class JsonParser {
                     break;
             }
         }
-
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss z");
+        SimpleDateFormat f;
+        if(start.contains("T")) {
+            f = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss z");
+        } else {
+            f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss z");
+        }
         start_date = f.parse(start + " " + timezone);
         end_date = f.parse(end + " " + timezone);
 
@@ -88,7 +92,7 @@ class JsonParser {
 
         readNameFromObject(reader, "data");
         readNameFromObject(reader, "items");
-        readNameFromObject(reader, "2020-03-01");
+        readNameFromObject(reader, "2020-03-02");
 
         reader.beginArray();
         List<Event> events = new ArrayList<>();

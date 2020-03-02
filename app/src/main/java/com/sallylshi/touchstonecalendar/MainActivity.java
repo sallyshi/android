@@ -2,14 +2,18 @@ package com.sallylshi.touchstonecalendar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.JsonToken;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -29,7 +33,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public class MainActivity extends AppCompatActivity {
-    private static String MISSION_CLIFFS_URL = "https://calendar.time.ly/rl4r7fx3/stream?tags=151613968&timely_id=timely_0.761031607867843";
+    private static String MISSION_CLIFFS_URL = "https://calendar.time.ly/rl4r7fx3/stream?&timely_id=timely_0.761031607867843";
 
     private class EventListAdapter extends BaseAdapter {
         List<Event> eventList;
@@ -68,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
             title.setText(String.format("%s%s", getString(R.string.title), eventList.get(position).title));
             description.setText(String.format("%s%s", getString(R.string.description), eventList.get(position).description
                             .replaceAll("&a;hellip;", "...")
+                            .replaceAll("&s;", "'")
+                            .replaceAll("&a;", "&")
                             .replaceAll("&q;", "\"")));
             cost_type.setText(String.format("%s%s", getString(R.string.cost), eventList.get(position).costType));
             start_time.setText(String.format("%s%s", getString(R.string.start_time), eventList.get(position).start.toString()));
@@ -82,6 +88,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ActionBar actionBar = getActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayShowCustomEnabled(true);
+            View customView = getLayoutInflater().inflate(R.layout.actionbar_title, null);
+            Spinner spinner = findViewById(R.id.dropdown_title);
+            ArrayAdapter<CharSequence > adapter = ArrayAdapter.createFromResource(this, R.array.dropdown_title_array, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            actionBar.setCustomView(customView);
+
+
+
+        }
         getHtmlFromWeb();
     }
 
