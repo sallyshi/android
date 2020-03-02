@@ -1,12 +1,14 @@
 package com.sallylshi.touchstonecalendar;
 
 import android.util.JsonReader;
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -92,18 +94,21 @@ class JsonParser {
 
         readNameFromObject(reader, "data");
         readNameFromObject(reader, "items");
-        readNameFromObject(reader, "2020-03-02");
 
-        reader.beginArray();
         List<Event> events = new ArrayList<>();
 
-        while(reader.hasNext()) {
-            reader.beginObject();
-            events.add(parseEvent(reader));
-            reader.endObject();
-        }
-        reader.endArray();
+        reader.beginObject();
+        while (reader.hasNext()) {
+            reader.nextName();
+            reader.beginArray();
 
+            while (reader.hasNext()) {
+                reader.beginObject();
+                events.add(parseEvent(reader));
+                reader.endObject();
+            }
+            reader.endArray();
+        }
         return events;
     }
 }
