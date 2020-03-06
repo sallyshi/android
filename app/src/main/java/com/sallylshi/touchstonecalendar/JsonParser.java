@@ -1,14 +1,12 @@
 package com.sallylshi.touchstonecalendar;
 
 import android.util.JsonReader;
-import android.util.Log;
 
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -106,17 +104,6 @@ class JsonParser {
     }
 
     List<Event> read(JsonReader reader) throws IOException, ParseException {
-      //  reader.beginObject();
-
-        // The 4th name's value contains the data we want to extract
-//        for (int i = 0; i < 3; i++) {
-//            reader.nextName();
-//            reader.skipValue();
-//        }
-
-       // reader.nextName();
-       // reader.beginObject();
-
         readNameFromObject(reader, "data");
         readNameFromObject(reader, "items");
 
