@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     ArrayList<Event> filteredEvents = new ArrayList<>();
                     if (constraint != null && constraint.length() > 0) {
                         for (Event event : eventList) {
-                            if (event.location.equals(constraint)) {
+                            if (event.location.contentEquals(constraint)) {
                                 filteredEvents.add(event);
                             }
                         }
@@ -149,12 +149,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String getFinalUrl(HashMap<String, String> map) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         for (String key : map.keySet()) {
-            result += "&" + key + "=" + map.get(key);
+            result.append("&").append(key).append("=").append(map.get(key));
         }
-        return result;
+        return result.toString();
     }
 
     private void getHtmlFromWeb() {
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 map.put(PER_PAGE, String.valueOf(per_page_value));
                 map.put(START_DATE, start_date_value);
 
-                URL url = new URL(REAL_JSON+getFinalUrl(map));
+                URL url = new URL(REAL_JSON + getFinalUrl(map));
                 URLConnection urlConnection = url.openConnection();
 
                 JsonParser jsonParser = new JsonParser();
@@ -204,8 +204,8 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                                if(firstVisibleItem == totalItemCount - visibleItemCount) {
-                                    page_value ++;
+                                if (firstVisibleItem == totalItemCount - visibleItemCount) {
+                                    page_value++;
                                     getHtmlFromWeb();
                                 }
                             }
@@ -218,70 +218,5 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }).start();
-    }
-
-    /**
-     * This parser outputs the original Json read. It is only used for testing.
-     */
-    public String testParser(JsonReader reader) throws IOException {
-        StringBuilder output = new StringBuilder();
-        String indent = "";
-        int counter = 0;
-        while (reader.peek() == JsonToken.END_ARRAY || reader.peek() == JsonToken.END_OBJECT || reader.hasNext()) {
-            Log.i("parse", "" + reader.peek());
-            switch (reader.peek()) {
-                case BEGIN_ARRAY: {
-                    reader.beginArray();
-                    output.append("[\n").append(indent);
-                    break;
-                }
-                case BEGIN_OBJECT: {
-                    indent += "" + counter++;
-                    reader.beginObject();
-                    output.append("{\n").append(indent);
-                    break;
-                }
-                case BOOLEAN: {
-                    output.append(reader.nextBoolean()).append("\n").append(indent);
-                    break;
-                }
-                case END_ARRAY: {
-                    reader.endArray();
-                    output.append("]\n").append(indent);
-                    break;
-                }
-                case END_DOCUMENT: {
-                    reader.close();
-                    return output.toString();
-                }
-                case END_OBJECT: {
-                    counter--;
-                    if (indent.length() > 0) {
-                        indent = indent.substring(0, indent.length() - 1);
-                    }
-                    reader.endObject();
-                    output.append("}\n").append(indent);
-                    break;
-                }
-                case NAME: {
-                    output.append("\"").append(reader.nextName()).append("\": ");
-                    break;
-                }
-                case NULL: {
-                    reader.nextNull();
-                    output.append("null,\n").append(indent);
-                    break;
-                }
-                case NUMBER: {
-                    output.append(reader.nextDouble()).append(",\n").append(indent);
-                    break;
-                }
-                case STRING: {
-                    output.append(reader.nextString()).append(",\n").append(indent);
-                    break;
-                }
-            }
-        }
-        return output.toString();
     }
 }
