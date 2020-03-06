@@ -106,17 +106,16 @@ class JsonParser {
     }
 
     List<Event> read(JsonReader reader) throws IOException, ParseException {
-        reader.beginObject();
+      //  reader.beginObject();
 
         // The 4th name's value contains the data we want to extract
-        for (int i = 0; i < 3; i++) {
-            reader.nextName();
-            reader.skipValue();
-        }
+//        for (int i = 0; i < 3; i++) {
+//            reader.nextName();
+//            reader.skipValue();
+//        }
 
-        reader.nextName();
-        reader.beginObject();
-        reader.nextName();
+       // reader.nextName();
+       // reader.beginObject();
 
         readNameFromObject(reader, "data");
         readNameFromObject(reader, "items");

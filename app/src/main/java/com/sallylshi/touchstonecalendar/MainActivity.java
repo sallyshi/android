@@ -1,5 +1,7 @@
 package com.sallylshi.touchstonecalendar;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
@@ -25,10 +27,17 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -36,6 +45,10 @@ import org.jsoup.nodes.Element;
 
 public class MainActivity extends AppCompatActivity {
     private static String MISSION_CLIFFS_URL = "https://calendar.time.ly/rl4r7fx3/stream?&timely_id=timely_0.761031607867843";
+    private static String REAL_JSON = "https://timelyapp.time.ly/api/calendars/13168648/events?group_by_date=1";
+    private static String START_DATE = "start_date";
+    private static String PAGE = "page";
+    private static String PER_PAGE = "per_page";
 
     private class EventListAdapter extends BaseAdapter implements Filterable {
         List<Event> eventList;
@@ -131,16 +144,42 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private String getFinalUrl(HashMap<String, String> map) {
+        String result = "";
+
+        for (String key : map.keySet()) {
+            result += "&" + key + "=" + map.get(key);
+        }
+        return result;
+    }
+
     private void getHtmlFromWeb() {
         new Thread(() -> {
             try {
-                Document doc = Jsoup.connect(MISSION_CLIFFS_URL).get();
-                Element element = doc.select("script[id*=\"timely-calendar-state\"]").first();
+                String page_value = "1";
+                String per_page_value = "20";
 
-                String json = element.data();
-                final String strippedJson = json.replaceAll("&q;", "\"");
+                //&page=1&per_page=20&start_date=2020-03-05"
+                HashMap<String, String> map = new HashMap<>();
+
+                Date currentTime = Calendar.getInstance().getTime();
+                SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+                String start_date_value = f.format(currentTime);
+
+                map.put(PAGE, page_value);
+                map.put(PER_PAGE, per_page_value);
+                map.put(START_DATE, start_date_value);
+
+//                Document doc = Jsoup.connect(MISSION_CLIFFS_URL).get();
+//                Element element = doc.select("script[id*=\"timely-calendar-state\"]").first();
+//                String json = element.data();
+//                final String strippedJson = json.replaceAll("&q;", "\"");
+
+                URL url = new URL(REAL_JSON+getFinalUrl(map));
+                URLConnection urlConnection = url.openConnection();
+
                 JsonParser jsonParser = new JsonParser();
-                JsonReader reader = new JsonReader(new StringReader(strippedJson));
+                JsonReader reader = new JsonReader(new InputStreamReader(urlConnection.getInputStream()));
                 reader.setLenient(true);
 
                 ListView listView = findViewById(R.id.list);
