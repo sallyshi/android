@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private int page_value = 1;
     private int per_page_value = 20;
     String start_date_value;
+    boolean isLoading = false;
 
     private class EventListAdapter extends BaseAdapter implements Filterable {
         List<Event> eventList;
@@ -158,9 +159,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getHtmlFromWeb() {
+        if(isLoading) {
+            return;
+        }
+        isLoading = true;
         new Thread(() -> {
             try {
-
                 Date currentTime = Calendar.getInstance().getTime();
                 SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
                 start_date_value = f.format(currentTime);
@@ -204,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                                if (firstVisibleItem == totalItemCount - visibleItemCount) {
+                                if (firstVisibleItem >= totalItemCount - visibleItemCount - 2) {
                                     page_value++;
                                     getHtmlFromWeb();
                                 }
@@ -212,6 +216,9 @@ public class MainActivity extends AppCompatActivity {
                         });
                     } catch (IOException | ParseException e) {
                         e.printStackTrace();
+                    }
+                    finally {
+                        isLoading = false;
                     }
                 });
             } catch (IOException e) {
