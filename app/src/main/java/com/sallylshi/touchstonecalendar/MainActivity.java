@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getHtmlFromWeb() {
-        if(isLoading) {
+        if (isLoading) {
             return;
         }
         isLoading = true;
@@ -216,8 +216,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     } catch (IOException | ParseException e) {
                         e.printStackTrace();
-                    }
-                    finally {
+                    } finally {
                         isLoading = false;
                     }
                 });
